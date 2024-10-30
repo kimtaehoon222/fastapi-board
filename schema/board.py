@@ -23,3 +23,9 @@ class Post(BaseModel):
     title: str
     content: Optional[str] = None
     create_date: datetime
+
+
+class Update(BaseModel):
+    no: int
+    title: str
+    content: Optional[str] = None
