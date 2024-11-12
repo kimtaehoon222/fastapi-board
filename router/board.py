@@ -32,3 +32,8 @@ async def read_post(post_no: int, db: Session = Depends(get_db)):
 @app.put(path="/update/{post_no}", description="기본 게시판 - 특정 게시글 변경", response_model=schema.board.Update)
 async def update_post(update_board_info: schema.board.Update, db: Session = Depends(get_db)):
     return update_board(update_board_info, db)
+
+
+@app.patch(path="/delete/{post_no}", description="기본 게시판 - 특정 게시글 삭제")
+async def delete_board(post_no: int, db: Session = Depends(get_db)):
+    return delete_board_delyn(post_no, db)

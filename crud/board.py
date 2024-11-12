@@ -34,7 +34,7 @@ def list_one_board(post_no: int, db: Session):
         raise HTTPException(status_code=422, detail={"error": str(error), "msg": "존재하지 않는 게시글 입니다."})
 
 
-def update_board(update_board_info : Update, db: Session):
+def update_board(update_board_info : Update, db : Session):
     try:
         post = db.query(Board).filter(and_(Board.no == update_board_info.no, Board.del_yn == 'Y')).first()
         if not post :
@@ -47,3 +47,17 @@ def update_board(update_board_info : Update, db: Session):
 
     except Exception as error:
         raise HTTPException(status_code=422, detail={"error": str(error), "msg": "존재하지 않는 게시글 입니다."})
+
+
+def delete_board_delyn(post_no: int, db: Session):
+    post = db.query(Board).filter(and_(Board.no == post_no, Board.del_yn == 'Y')).first()
+    try:
+        if not post :
+            raise Exception("존재하지 않는 게시글입니다.")
+        post.del_yn = 'N'
+        db.commit()
+        db.refresh(post)
+        return {'msg' : f'{post.title}이 삭제 되었습니다.'}
+
+    except Exception as e:
+        return str(e)
